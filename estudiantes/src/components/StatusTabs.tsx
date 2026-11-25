@@ -7,7 +7,10 @@ const options: { key: TaskStatus; label: string }[] = [
   { key: 'completadas', label: 'Completadas' },
 ];
 
-type Props = { current: TaskStatus; onChange: (status: TaskStatus) => void };
+type Props = {
+  current: TaskStatus;
+  onChange: (status: TaskStatus) => void;
+};
 
 export function StatusTabs({ current, onChange }: Props) {
   return (
@@ -18,9 +21,19 @@ export function StatusTabs({ current, onChange }: Props) {
           accessibilityRole="button"
           accessibilityState={{ selected: current === item.key }}
           onPress={() => onChange(item.key)}
-          style={[styles.button, current === item.key && styles.active]}
+          style={[
+            styles.button,
+            current === item.key && styles.active,
+          ]}
         >
-          <Text style={[styles.text, current === item.key && styles.textActive]}>{item.label}</Text>
+          <Text
+            style={[
+              styles.text,
+              current === item.key && styles.textActive,
+            ]}
+          >
+            {item.label}
+          </Text>
         </Pressable>
       ))}
     </View>
@@ -28,9 +41,45 @@ export function StatusTabs({ current, onChange }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', backgroundColor: '#E7ECF5', padding: 4, borderRadius: 14, gap: 3, marginBottom: 13 },
-  button: { flex: 1, borderRadius: 11, paddingVertical: 10, justifyContent: 'center', alignItems: 'center' },
-  active: { backgroundColor: '#FFFFFF' },
-  text: { color: '#67748B', fontWeight: '700', fontSize: 11 },
-  textActive: { color: '#213B63' },
+  container: {
+    flexDirection: 'row',
+    backgroundColor: '#FCE4EC',
+    padding: 5,
+    borderRadius: 25,
+    gap: 5,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#F3CDDC',
+  },
+
+  button: {
+    flex: 1,
+    borderRadius: 20,
+    paddingVertical: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  active: {
+    backgroundColor: '#A83265',
+    elevation: 2,
+    shadowColor: '#A83265',
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+
+  text: {
+    color: '#93445F',
+    fontWeight: '700',
+    fontSize: 11,
+  },
+
+  textActive: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
 });

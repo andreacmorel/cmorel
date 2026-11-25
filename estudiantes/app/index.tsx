@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
-  ActivityIndicator, FlatList, Keyboard, Pressable, ScrollView,
+  ActivityIndicator, FlatList, Keyboard, Pressable,
   StyleSheet, Text, TextInput, View,
 } from 'react-native';
 import { TaskCard } from '../src/components/TaskCard';
@@ -98,15 +98,17 @@ export default function TaskManagerScreen() {
         contentContainerStyle={styles.listContainer}
         ListHeaderComponent={
           <>
+            <View style={styles.hero}>
             <View style={styles.eyebrowRow}>
-              <Text style={styles.eyebrow}>LABORATORIO · REACT NATIVE</Text>
+              <Text style={styles.eyebrow}>MI ESPACIO DE ORGANIZACIÓN</Text>
               <Pressable accessibilityRole="button" onPress={() => router.push('/guia')} style={styles.helpButton}>
                 <Text style={styles.helpText}>Guía ↗</Text>
               </Pressable>
             </View>
-            <Text style={styles.heading}>Gestor de tareas</Text>
-            <Text style={styles.subtitle}>Proyecto de clase para diagnosticar errores reales.</Text>
+            <Text style={styles.heading}>Morel Tasks</Text>
+            <Text style={styles.subtitle}>Pequeños pasos, grandes logros.</Text>
 
+            </View>
             <View style={styles.statsRow}>
               <View style={[styles.stat, styles.statDark]}>
                 <Text style={styles.statLabelLight}>TAREAS</Text>
@@ -122,13 +124,18 @@ export default function TaskManagerScreen() {
               </View>
             </View>
 
+            <View style={styles.progressCard}>
+              <Text style={styles.progressTitle}>Tu progreso</Text>
+              <Text style={styles.progressCaption}>{total ? Math.round(completed / total * 100) : 0}% completado</Text>
+              <View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${total ? Math.round(completed / total * 100) : 0}%` as `${number}%` }]} /></View>
+            </View>
             <Text style={styles.label}>NUEVA TAREA</Text>
             <View style={styles.addRow}>
               <TextInput
                 testID="new-task-input"
                 accessibilityLabel="Nombre de la nueva tarea"
                 placeholder="Ej.: Revisar documentación"
-                placeholderTextColor="#95A0B3"
+                placeholderTextColor="#936D7C"
                 value={newTitle}
                 onChangeText={setNewTitle}
                 returnKeyType="done"
@@ -145,7 +152,7 @@ export default function TaskManagerScreen() {
               testID="search-input"
               accessibilityLabel="Buscar tareas"
               placeholder="Buscar por nombre..."
-              placeholderTextColor="#95A0B3"
+              placeholderTextColor="#936D7C"
               value={query}
               onChangeText={setQuery}
               style={styles.searchInput}
@@ -163,51 +170,57 @@ export default function TaskManagerScreen() {
             {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
             {loading ? (
               <View style={styles.loading}>
-                <ActivityIndicator color="#147D73" size="large" />
+                <ActivityIndicator color="#A83265" size="large" />
                 <Text style={styles.loadingLabel}>Consultando tareas…</Text>
               </View>
             ) : null}
           </>
         }
         ListEmptyComponent={!loading ? <Text style={styles.empty}>No hay tareas para mostrar con estos filtros.</Text> : null}
-        ListFooterComponent={<Text style={styles.footer}>EDI · Desarrollo de Software Multiplataforma · Auditoría técnica</Text>}
+        ListFooterComponent={<Text style={styles.footer}>Morel Tasks · Programación III · Andrea Morel</Text>}
       />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F5F7FB' },
+  hero: { backgroundColor: '#F8C8DC', borderRadius: 24, padding: 18, marginBottom: 14 },
+  progressCard: { backgroundColor: '#FFFFFF', borderRadius: 18, padding: 16, marginBottom: 22, borderWidth: 1, borderColor: '#F0CBD9' },
+  progressTitle: { color: '#68253F', fontSize: 16, fontWeight: '800' },
+  progressCaption: { color: '#815568', fontSize: 12, marginTop: 5, marginBottom: 10 },
+  progressTrack: { height: 8, borderRadius: 8, backgroundColor: '#FADCE8', overflow: 'hidden' },
+  progressFill: { height: 8, borderRadius: 8, backgroundColor: '#A83265' },
+  screen: { flex: 1, backgroundColor: '#FFF1F5' },
   listContainer: { paddingHorizontal: 19, paddingTop: 18, paddingBottom: 55, flexGrow: 1 },
   eyebrowRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  eyebrow: { fontSize: 10, letterSpacing: 1.5, fontWeight: '900', color: '#168879' },
-  helpButton: { backgroundColor: '#E5EFEC', paddingVertical: 8, paddingHorizontal: 11, borderRadius: 9 },
-  helpText: { fontWeight: '800', color: '#187A71', fontSize: 12 },
-  heading: { fontSize: 30, fontWeight: '900', color: '#172743', marginTop: 12 },
-  subtitle: { color: '#75829A', fontSize: 13, marginTop: 7, marginBottom: 21, lineHeight: 20 },
-  statsRow: { flexDirection: 'row', gap: 8, marginBottom: 24 },
-  stat: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 15, flex: 1, borderColor: '#E7EBF3', borderWidth: 1 },
-  statDark: { backgroundColor: '#192C4D', borderColor: '#192C4D' },
-  statLabel: { fontWeight: '800', color: '#8390A5', fontSize: 9, letterSpacing: 0.35 },
-  statLabelLight: { fontWeight: '800', color: '#B3C4DD', fontSize: 9, letterSpacing: 0.35 },
-  statNumber: { marginTop: 8, color: '#1B3150', fontWeight: '900', fontSize: 25 },
+  eyebrow: { fontSize: 10, letterSpacing: 1.5, fontWeight: '900', color: '#A83265' },
+  helpButton: { backgroundColor: '#FADCE8', paddingVertical: 8, paddingHorizontal: 11, borderRadius: 9 },
+  helpText: { fontWeight: '800', color: '#96305B', fontSize: 12 },
+  heading: { fontSize: 30, fontWeight: '900', color: '#68253F', marginTop: 12 },
+  subtitle: { color: '#815568', fontSize: 13, marginTop: 7, marginBottom: 0, lineHeight: 20 },
+  statsRow: { flexDirection: 'row', gap: 8, marginBottom: 12 },
+  stat: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 15, flex: 1, borderColor: '#F0CBD9', borderWidth: 1 },
+  statDark: { backgroundColor: '#A83265', borderColor: '#A83265' },
+  statLabel: { fontWeight: '800', color: '#815568', fontSize: 9, letterSpacing: 0.35 },
+  statLabelLight: { fontWeight: '800', color: '#FFE0EC', fontSize: 9, letterSpacing: 0.35 },
+  statNumber: { marginTop: 8, color: '#68253F', fontWeight: '900', fontSize: 25 },
   statNumberLight: { marginTop: 8, color: '#FFFFFF', fontWeight: '900', fontSize: 25 },
-  label: { fontSize: 11, color: '#384E6D', fontWeight: '900', letterSpacing: 1.1, marginBottom: 10 },
+  label: { fontSize: 11, color: '#68253F', fontWeight: '900', letterSpacing: 1.1, marginBottom: 10 },
   sectionHeading: { marginTop: 12 },
   addRow: { flexDirection: 'row', gap: 8, marginBottom: 7 },
-  addInput: { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E0E6F0', borderRadius: 12, paddingHorizontal: 12, paddingVertical: 11, color: '#1D3151', fontSize: 13, minWidth: 0 },
-  addButton: { backgroundColor: '#147D73', paddingHorizontal: 13, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  addInput: { flex: 1, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#EBC4D3', borderRadius: 12, paddingHorizontal: 12, paddingVertical: 11, color: '#68253F', fontSize: 13, minWidth: 0 },
+  addButton: { backgroundColor: '#A83265', paddingHorizontal: 13, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
   addButtonText: { color: '#FFFFFF', fontWeight: '800', fontSize: 12 },
-  feedback: { color: '#147D73', fontSize: 12, marginBottom: 8 },
-  searchInput: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E0E6F0', borderRadius: 12, paddingHorizontal: 13, paddingVertical: 13, color: '#1D3151', fontSize: 13, marginBottom: 12 },
+  feedback: { color: '#A83265', fontSize: 12, marginBottom: 8 },
+  searchInput: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#EBC4D3', borderRadius: 12, paddingHorizontal: 13, paddingVertical: 13, color: '#68253F', fontSize: 13, marginBottom: 12 },
   actions: { flexDirection: 'row', justifyContent: 'space-between', gap: 7, marginBottom: 13 },
-  retryButton: { paddingVertical: 11, paddingHorizontal: 11, backgroundColor: '#E5F2EF', borderRadius: 10, flex: 1, alignItems: 'center' },
-  retryLabel: { fontSize: 11, color: '#18776D', fontWeight: '800' },
+  retryButton: { paddingVertical: 11, paddingHorizontal: 11, backgroundColor: '#FADCE8', borderRadius: 10, flex: 1, alignItems: 'center' },
+  retryLabel: { fontSize: 11, color: '#96305B', fontWeight: '800' },
   simulateButton: { paddingVertical: 11, paddingHorizontal: 10, backgroundColor: '#FDEBEB', borderRadius: 10, flex: 1, alignItems: 'center' },
   simulateLabel: { fontSize: 11, color: '#B84F4F', fontWeight: '800' },
   error: { color: '#A53D49', backgroundColor: '#FFF0F0', padding: 11, borderRadius: 10, fontWeight: '700', marginBottom: 10, fontSize: 12 },
   loading: { alignItems: 'center', paddingTop: 24, paddingBottom: 18, gap: 10 },
-  loadingLabel: { color: '#75829A', fontSize: 12 },
-  empty: { marginTop: 30, textAlign: 'center', color: '#8490A5', lineHeight: 20, fontSize: 13 },
-  footer: { textAlign: 'center', color: '#A4AFC1', fontSize: 10, paddingTop: 30 },
+  loadingLabel: { color: '#815568', fontSize: 12 },
+  empty: { marginTop: 30, textAlign: 'center', color: '#815568', lineHeight: 20, fontSize: 13 },
+  footer: { textAlign: 'center', color: '#815568', fontSize: 10, paddingTop: 30 },
 });
